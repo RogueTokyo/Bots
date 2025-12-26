@@ -1,0 +1,21 @@
+# Override файл для локальной разработки
+# Этот файл переопределяет настройки для разработки
+
+services:
+  postgres:
+    ports:
+      - "5432:5432"  # Доступ к PostgreSQL локально
+
+  bot:
+    env_file:
+      - .env  # Переменные окружения для разработки
+    environment:
+      - LOG_LEVEL=DEBUG  # Более подробное логирование для разработки
+      - API_BASE_URL=https://example.ru
+      - API_TIMEOUT=30
+    volumes:
+      - ./bot:/app/bot  # Монтируем код для hot reload
+      - ./main.py:/app/main.py  # Монтируем точку входа
+      - ./logs:/app/logs  # Логи доступны локально
+    stdin_open: true  # Для интерактивного режима
+    tty: true
